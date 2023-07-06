@@ -53,20 +53,22 @@ const AdminView = () => {
     }
   };
   const handleDownloadCSV = async () => {
-    // try {
-    //   const response = await axios.get(API_URL + '/loans/view_all_data/csv/', {
-    //     headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` },
-    //   });
-   
-    //   window.open(URL.createObjectURL(new Blob([response.data])), '_blank');
-    // } catch (error) {
-    //   console.log('Error:', error);
-    // }
-  const csvURL = API_URL + '/loans/view_all_data/csv/';
+    
+  const csvURL = API_URL + 'loans/view_all_data/csv/';
   const headers = { Authorization: `Bearer ${localStorage.getItem('access_token')}` };
 
-  // Open the CSV file URL in a new window with headers
-  window.open(csvURL, '_blank', 'headers=' + JSON.stringify(headers));
+  axios.get(csvURL, {
+    headers: headers,
+    responseType: 'blob',
+  })
+    .then((response) => {
+      const url = URL.createObjectURL(response.data);
+      window.open(url, '_blank');
+    })
+    .catch((error) => {
+      console.error('Error fetching CSV:', error);
+    });
+  
   };
   
   
