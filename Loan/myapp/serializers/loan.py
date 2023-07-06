@@ -90,7 +90,7 @@ class LoanSerializer(serializers.Serializer):
 
         # the limit is the smallest value between the business's accepted amount and remaining balance from credit limit
         balance = customer.get_credit_limit - customer.get_current_outstanding_debt
-        if balance < 0:
+        if balance <= 0:
             raise serializers.ValidationError("The user have exceeded their credit limit")
         accepted_amount = min(limit, balance, requested_amount)
 
