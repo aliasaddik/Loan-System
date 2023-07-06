@@ -25,6 +25,7 @@ export const MyNavbar =() =>{
   <Navbar.Brand>Admin Navbar</Navbar.Brand>
         <Nav className="me-auto">
             <Nav.Link href="/viewAll">View All</Nav.Link>
+            <Nav.Link href="/logout">Logout</Nav.Link>
             
               
           </Nav>
@@ -38,6 +39,7 @@ export const MyNavbar =() =>{
         <Nav className="me-auto">
             <Nav.Link href="/onboard">Onboard a new customer</Nav.Link>
             <Nav.Link href="/loans/create">Create an offer</Nav.Link>
+            <Nav.Link href="/logout">Logout</Nav.Link>
               
           </Nav>
         
@@ -49,6 +51,7 @@ export const MyNavbar =() =>{
         <Nav className="me-auto">
             <Nav.Link href="/loans/view_all">view loans and offers</Nav.Link>
             <Nav.Link href="/installments/view_all">installmnets</Nav.Link>
+            <Nav.Link href="/logout">Logout</Nav.Link>
               
           </Nav>
         

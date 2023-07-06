@@ -47,7 +47,12 @@ const ViewCustomer = ( ) => {
               <p>Date of Birth: {customerData.date_of_birth}</p>
               <p>Current Debt Outside: {customerData.current_debt_outside}</p>
               <p>Credit Limit Outside: {customerData.credit_limit_outside}</p>
-              {/* Add more customer fields as needed */}
+              <p>Credit History Length: {customerData.credit_history_length}</p>
+              <p>Pursuit of New Credit: {customerData.pursuit_of_new_credit}</p>
+              <p>Months Since Last Late Payment: {customerData.months_since_last_late_payment}</p>
+              <p>Credit Mix: {customerData.credit_mix}</p>
+              <p>Created At: {customerData.created_at}</p>
+            
             </Card.Text>
           </Card.Body>
         </Card>

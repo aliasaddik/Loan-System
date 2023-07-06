@@ -44,7 +44,7 @@ class Installments(models.Model):
         if self.due_date > timezone.now().date():
             return self.original_amount_due
         else:
-            no_of_days = (timezone.now().date() - self.due_date).days;
-            return self.original_amount_due * no_of_days *(self.loan.business.late_fee_interest+100)
+            no_of_days =((timezone.now().date() - self.due_date).days)+1
+            return self.original_amount_due * (no_of_days * (((self.loan.business.late_fee_interest)/100)+1))
 admin.site.register(MyLoan) 
 admin.site.register(Installments) 

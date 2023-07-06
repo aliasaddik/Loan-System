@@ -63,15 +63,13 @@ const CreateLoan = () => {
           customer: '',
           no_of_months: ''
         });
-
-        // Set loanCreated flag to show success message
-        setLoanCreated(true);
+      setLoanCreated(true);
       } catch (error) {
         const newErrors = {};
-        newErrors.error =  error.response.data.message
-        console.log(error.response)
+        newErrors.error =  error.response.data;
+        console.log(error.response.data)
         setErrors(newErrors);
-        // Handle error case here
+      
       }
     }
   };
@@ -93,18 +91,7 @@ const CreateLoan = () => {
         </div>
       ) : (
         <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formRequestedAmount">
-            <Form.Label>Requested Amount</Form.Label>
-            <Form.Control
-              type="number"
-              placeholder="Enter requested amount"
-              name="requested_amount"
-              value={formData.requested_amount}
-              onChange={handleChange}
-              isInvalid={!!errors.requested_amount}
-            />
-            <Form.Control.Feedback type="invalid">{errors.requested_amount}</Form.Control.Feedback>
-          </Form.Group>
+          
 
           <Form.Group controlId="formCustomer">
             <Form.Label>Customer Email</Form.Label>
@@ -117,6 +104,19 @@ const CreateLoan = () => {
               isInvalid={!!errors.customer}
             />
             <Form.Control.Feedback type="invalid">{errors.customer}</Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group controlId="formRequestedAmount">
+            <Form.Label>Requested Amount</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Enter requested amount"
+              name="requested_amount"
+              value={formData.requested_amount}
+              onChange={handleChange}
+              isInvalid={!!errors.requested_amount}
+            />
+            <Form.Control.Feedback type="invalid">{errors.requested_amount}</Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group controlId="formNoOfMonths">

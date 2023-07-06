@@ -57,8 +57,8 @@ const VerifyUser = () => {
       // Handle errors
      
       const newErrors = {};
-      newErrors.error=  error.response.data.message
-      console.log(error.response)
+      newErrors.error=  error.response.data.error.non_field_errors;
+      console.log(error.response.data.error)
       setErrors(newErrors);
       
     }

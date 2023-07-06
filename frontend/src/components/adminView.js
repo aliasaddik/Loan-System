@@ -144,26 +144,28 @@ const AdminView = () => {
         </div>
   <div>
         {loans.map((loan) => (
+          
           <div key={loan.id}>
-            <p>Requested Amount: {loan.requested_amount}</p>
-            <p>
+             <p>
               Customer:{' '}
               <a href={`/viewcustomer/:${loan.customer.id}`}>
                 {loan.customer.full_name}
               </a>
             </p>
+            <p>Requested Amount: {loan.requested_amount}</p>
             <p>No of Months: {loan.no_of_months}</p>
             <p>Accepted Amount: {loan.accepted_amount}</p>
             <p>Total Amount: {loan.total_amount}</p>
             <p>Business: {loan.business}</p>
             <p>Accepted: {loan.accepted? 'Yes' : 'No'}</p>
-            <p>Accepted At: {loan.accepted_at}</p>
             <p>
               Offer PDF:{' '}
               <button onClick={() => window.open(API_URL + loan.offer_pdf)}>View PDF</button>
             </p>
-           
+            <hr />
           </div>
+          
+             
         ))}
       </div>
 

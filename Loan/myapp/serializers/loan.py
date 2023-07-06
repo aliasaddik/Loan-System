@@ -112,7 +112,7 @@ class LoanSerializer(serializers.Serializer):
         c.drawString(50, 690, f"Requested Amount: {requested_amount}")
         c.drawString(50, 660, f"Accepted Amount: {accepted_amount}")
         c.drawString(50, 630, f"Number of Months: {no_of_months}")
-        c.drawString(50, 600, f"Interest Rate: {rate}")
+        c.drawString(50, 600, f"Interest Rate: {business.base_interest_rate} %")
         c.save()
 
         # Store the PDF in validated_data
@@ -124,7 +124,7 @@ class LoanSerializer(serializers.Serializer):
 
         # Clean up the temporary PDF file
         os.remove(pdf_filename)
-        validated_data["interest_rate"] = rate
+        validated_data["interest_rate"] = business.base_interest_rate
         validated_data['accepted_amount'] = accepted_amount
         validated_data['total_amount'] = total_amount
         validated_data['business'] = business

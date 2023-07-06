@@ -21,6 +21,9 @@ const RegisterCustomer = () => {
     credit_mix: null
   });
   const [errors, setErrors] = useState({});
+  const[usercode, setUsercode] = useState('')
+  const [registered, setRegistered] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -86,6 +89,10 @@ const RegisterCustomer = () => {
       isValid = false;
       newErrors.months_since_last_late_payment = 'Enter a valid number';
     }
+    if ((formData.credit_mix !== null && isNaN(formData.credit_mix))|| formData.credit_mix<0) {
+      isValid = false;
+      newErrors.credit_mix = 'Enter a valid number';
+    } 
 
     // Set errors state
     setErrors(newErrors);
@@ -97,6 +104,7 @@ const RegisterCustomer = () => {
     e.preventDefault();
      
     if (validateForm()) {
+      setIsLoading(true);
       const formDataObj = new FormData();
       formDataObj.append('first_name', formData.first_name);
       formDataObj.append('last_name', formData.last_name);
@@ -113,38 +121,50 @@ const RegisterCustomer = () => {
       formDataObj.append('credit_mix', formData.credit_mix);
 
       try {
-        const { response } = await axios.post(
+        const response  = await axios.post(
           API_URL + '/auth/onboard/',
           formDataObj,
-          {  'Content-Type': 'multipart/form-data', headers: {"Authorization" : `Bearer ${localStorage.getItem('access_token')}`}});
+          {  'Content-Type': 'multipart/form-data', headers: {"Authorization" : `Bearer ${localStorage.getItem('access_token')}`}}) 
+          console.log(response.data.results.usercode+"response")
+          console.log(response.data.results.results+"response")
+          setRegistered (true);
+          setUsercode(response.data.results.usercode);  
+          setIsLoading(false);
+         
+      
+          
 
-        // Reset form fields
-        setFormData({
-          first_name: '',
-          last_name: '',
-          email: '',
-          mobile_number: '',
-          date_of_birth: '',
-          id_front: null,
-          id_back: null,
-          current_debt_outside: null,
-          credit_limit_outside: null,
-          credit_history_length: null,
-          pursuit_of_new_credit: null,
-          months_since_last_late_payment: null,
-          credit_mix: null,
-        });
-        setErrors({});
-        window.location.href = '/loans/create';
-
+        // // Reset form fields
+        // setFormData({
+        //   first_name: '',
+        //   last_name: '',
+        //   email: '',
+        //   mobile_number: '',
+        //   date_of_birth: '',
+        //   id_front: null,
+        //   id_back: null,
+        //   current_debt_outside: null,
+        //   credit_limit_outside: null,
+        //   credit_history_length: null,
+        //   pursuit_of_new_credit: null,
+        //   months_since_last_late_payment: null,
+        //   credit_mix: null,
+        // });
+        // setErrors({});
+       
+       
+       
         
       } catch (error) {
 
         const newErrors = {};
-        newErrors.error = error.message;
+        newErrors.error = error.response.data.message;
         console.log(formData)
         console.log(error.response.data.error)
         setErrors(newErrors);
+      } finally {
+        
+        setIsLoading(false);
       }
     }
   };
@@ -156,11 +176,13 @@ const RegisterCustomer = () => {
       [name]: value,
     }));
   };
-
+  const handleClick =()=>{
+  window.location.href = '/loans/create';
+}
   return (
-    <div>
+  <div>
       <h2>Register Customer</h2>
-      <Form onSubmit={handleSubmit}>
+      {!registered ? ( <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formFirstName">
           <Form.Label>First Name</Form.Label>
           <Form.Control
@@ -304,7 +326,7 @@ const RegisterCustomer = () => {
         <Form.Group controlId="formCreditMix">
           <Form.Label>Credit Mix</Form.Label>
           <Form.Control
-            type="text"
+            type="number"
             placeholder="Enter credit mix"
             name="credit_mix"
             value={formData.credit_mix}
@@ -313,10 +335,13 @@ const RegisterCustomer = () => {
           />
           {errors.credit_mix && <Form.Control.Feedback type="invalid">{errors.credit_mix}</Form.Control.Feedback>}
         </Form.Group>
-        <Button variant="primary" type="submit">
-          Register
-        </Button>
-      </Form>
+         <Button type="submit" disabled={isLoading}>
+            {isLoading ? 'Loading...' : 'Submit'}
+          </Button>
+      </Form>):
+      ( <div><p>The usercode is {usercode} now you can create a loan for this customer </p>
+       <Button  variant="primary" type="submit"  onClick={() => handleClick()}>Create Loan </Button></div>) }
+     
       {errors.error && <p>{errors.error}</p>}
     </div>
   );

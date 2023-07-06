@@ -35,14 +35,19 @@ class CustomerRegisterApiView(GenericAPIView):
        
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-           
+            email = serializer.validated_data.get("email")
+            if get_user_by_email(email):
+                return CustomResponse.bad_request(
+                    message="User already exists",
+                    error={"email": ["User already exists"]},
+                )
             password_token = secrets.token_hex(16)  
             user = serializer.save(password = make_password(password_token))
 
              
             send_mail(
     		    subject="complete loan system onboarding",
-    		    message= 'Hi '+ serializer.data['first_name']+' Use this password '+ password_token+' along with the code provided by the merchant to login ',
+    		    message= 'Hi '+ serializer.data['first_name']+'Follow this link http://localhost:3000/verify and  Use this password '+ password_token+' along with the code provided by the merchant to login ',
     		    from_email=settings.EMAIL_HOST_USER,
     		    recipient_list=[serializer.data['email']])
            
